@@ -1,21 +1,25 @@
 let btnCont = document.querySelector("#btnCont");
 let gridCont = document.querySelector("#gridCont");
 //let gridBox = document.createElement("div");
-let changecolor = "black";
+let changeColor = "black";
 size(16);
 function size (currentSize){
-sizeVal=(600/currentSize);
+    sizeVal=(600/currentSize);
     for (let i=0;i<currentSize*currentSize;i++){
         let gridBox = document.createElement("div")
         gridBox.className = 'gridBox'
         gridBox.setAttribute("style", 
             `width: ${sizeVal}px;
             height: ${sizeVal}px;`);
-        gridBox.addEventListener("mouseenter", function () {
-            gridBox.style.background = "black";
-        });
         gridCont.appendChild(gridBox);
     };
+    gridCont.addEventListener('mouseover',(event,changeColor) => {
+    let gridBoxEvent = event.target.className
+    if(gridBoxEvent === 'gridBox'){
+        event.target.classList.add('filled');
+        event.target.classList.add(changeColor);
+    };
+    });
 };
 let clearBtn = document.querySelector("#clear");
 
@@ -36,6 +40,7 @@ resizeBtn.addEventListener('click',() => {
         return size(currentSize);
     }   else {
         alert("Not a valid value!");
+        return size (16);
     };
 });
 
