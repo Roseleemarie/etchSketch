@@ -11,6 +11,9 @@ function size (currentSize){
         gridBox.setAttribute("style", 
             `width: ${sizeVal}px;
             height: ${sizeVal}px;`);
+        gridBox.addEventListener("mouseenter", function () {
+            gridBox.style.background = 'black';
+        });
         gridCont.appendChild(gridBox);
     };
     gridCont.addEventListener('mouseover',(event,changeColor) => {
