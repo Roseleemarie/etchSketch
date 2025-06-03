@@ -1,7 +1,7 @@
+//current issue. colour only applies AFTER being pressed. No default colour
+
 let btnCont = document.querySelector("#btnCont");
 let gridCont = document.querySelector("#gridCont");
-//let gridBox = document.createElement("div");
-let changeColor = "black";
 size(16);
 function size (currentSize){
     sizeVal=(600/currentSize);
@@ -11,21 +11,33 @@ function size (currentSize){
         gridBox.setAttribute("style", 
             `width: ${sizeVal}px;
             height: ${sizeVal}px;`);
-        gridBox.addEventListener("mouseenter", function () {
-            gridBox.style.background = 'black';
-        });
         gridCont.appendChild(gridBox);
     };
-    gridCont.addEventListener('mouseover',(event,changeColor) => {
-    let gridBoxEvent = event.target.className
-    if(gridBoxEvent === 'gridBox'){
-        event.target.classList.add('filled');
-        event.target.classList.add(changeColor);
-    };
-    });
 };
-let clearBtn = document.querySelector("#clear");
-
+gridCont.addEventListener('mouseover', fillBoxBlack)
+function fillBoxBlack(event){
+    let gridBoxEvent = event.target.className;
+    if(gridBoxEvent === 'gridBox'){
+        event.target.classList.add('fill');
+        event.target.style.backgroundColor = 'black'
+    };
+};
+const colourBtn = document.querySelector('#colour');
+colourBtn.addEventListener('click',()=>{
+    console.log('colour pressed');
+    gridCont.removeEventListener('mouseover', fillBoxBlack);
+    chosenColour = prompt ('Enter a valid colour HEX, RGB,or Name');
+    gridCont.addEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
+});
+function fillBoxColour (chosenColour,event){
+    let gridBoxEvent = event.target.className;
+    if(gridBoxEvent === 'gridBox'|| gridBoxEvent === 'gridBox fill'){
+        event.target.classList.add('fill');
+        console.log(chosenColour);
+        event.target.style.backgroundColor = `${chosenColour}`;
+    };
+};
+const clearBtn = document.querySelector("#clear");
 clearBtn.addEventListener('click', ()=> gridClear('16'));
 function gridClear (currentSize){
     let gridBoxArray = document.querySelectorAll(".gridBox");
@@ -34,7 +46,7 @@ function gridClear (currentSize){
     });
     return size(currentSize);
 };
-let resizeBtn = document.querySelector("#size")
+const resizeBtn = document.querySelector("#size")
 resizeBtn.addEventListener('click',() => gridClear(""));
 resizeBtn.addEventListener('click',() => {
     currentSize = prompt ("Enter a number from 2-100");

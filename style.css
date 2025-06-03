@@ -43,9 +43,6 @@
     border: solid black 2px; 
     box-sizing: border-box;
 }
-.black{
-    background-color: black;
-}
 button{
     background-color: rgb(146, 185, 185);
     width:70px;
