@@ -1,5 +1,3 @@
-//current issue. colour only applies AFTER being pressed. No default colour
-
 let btnCont = document.querySelector("#btnCont");
 let gridCont = document.querySelector("#gridCont");
 size(16);
@@ -23,10 +21,12 @@ function fillBoxBlack(event){
     };
 };
 const colourBtn = document.querySelector('#colour');
+let colourBtnOn = false
 colourBtn.addEventListener('click',()=>{
     console.log('colour pressed');
+    colourBtnOn = !colourBtnOn
     gridCont.removeEventListener('mouseover', fillBoxBlack);
-    chosenColour = prompt ('Enter a valid colour HEX, RGB,or Name');
+    chosenColour = prompt ('Enter a valid colour HEX or Name');
     gridCont.addEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
 });
 function fillBoxColour (chosenColour,event){
@@ -58,5 +58,27 @@ resizeBtn.addEventListener('click',() => {
         return size (16);
     };
 });
-
-
+const eraseBtn = document.querySelector('#erase');
+let eraseBtnOn = false;
+eraseBtn.addEventListener('click',()=>{
+    gridCont.removeEventListener('mouseover', fillBoxBlack);
+    gridCont.removeEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
+    eraseBtnOn = !eraseBtnOn;
+    gridCont.addEventListener('mouseover', erase);
+});
+function erase (event){
+    if (eraseBtnOn == true){
+        let gridBoxEvent = event.target.className;
+        if(gridBoxEvent === 'gridBox fill'){
+        event.target.classList.remove('fill');
+        event.target.style.backgroundColor = 'unset';
+        };
+    }else if (eraseBtnOn == false){
+        gridCont.removeEventListener('mouseover', erase);
+        if(colourBtnOn == true){
+        gridCont.addEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
+        }else{
+        gridCont.addEventListener('mouseover', fillBoxBlack);
+        }
+    }
+};
