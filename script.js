@@ -15,7 +15,7 @@ function size (currentSize){
 gridCont.addEventListener('mouseover', fillBoxBlack)
 function fillBoxBlack(event){
     let gridBoxEvent = event.target.className;
-    if(gridBoxEvent === 'gridBox'){
+    if(gridBoxEvent === 'gridBox'|| gridBoxEvent === 'gridBox fill'){
         event.target.classList.add('fill');
         event.target.style.backgroundColor = 'black'
     };
@@ -76,9 +76,38 @@ function erase (event){
     }else if (eraseBtnOn == false){
         gridCont.removeEventListener('mouseover', erase);
         if(colourBtnOn == true){
+            gridCont.addEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
+        }else{
+            gridCont.addEventListener('mouseover', fillBoxBlack);
+        }
+    };
+};
+const rgbBtn = document.querySelector('#rgb');
+    let rgbBtnOn = false;
+rgbBtn.addEventListener('click',()=>{
+    gridCont.removeEventListener('mouseover', fillBoxBlack);
+    gridCont.removeEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
+    rgbBtnOn = !rgbBtnOn;
+    gridCont.addEventListener('mouseover',getRandomRgbColour);
+});
+    function getRandomRgbColour(event) {
+            if (rgbBtnOn == true){
+     let r = Math.floor(Math.random() * 256);
+     let g = Math.floor(Math.random() * 256);
+     let b = Math.floor(Math.random() * 256);
+     rgbColour =  `rgb(${r}, ${g}, ${b})`;
+     let gridBoxEvent = event.target.className;
+        if(gridBoxEvent === 'gridBox'|| gridBoxEvent === 'gridBox fill'){
+        event.target.classList.add('fill');
+        event.target.style.backgroundColor = `${rgbColour}`;
+    };
+    }else if (rgbBtnOn == false){
+        gridCont.removeEventListener('mouseover', getRandomRgbColour);
+        if(colourBtnOn == true){
         gridCont.addEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
         }else{
         gridCont.addEventListener('mouseover', fillBoxBlack);
         }
-    }
+    };
+
 };
