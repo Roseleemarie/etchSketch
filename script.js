@@ -25,29 +25,30 @@ function fillBoxBlack(event){
 };
 gridCont.addEventListener('mouseover', fillBoxBlack);
 const colourBtn = document.querySelector('#colour');
-colourBtn.addEventListener('click',colourBtnHandler)
+colourBtn.addEventListener('click',colourBtnHandler);
+let getUserColour;
 function colourBtnHandler (){
-    const userColourController = new AbortController
-    const signal = userColourController.signal
     if (!colourBtnOn){
         colourBtnOn = true
-        let getUserColour = prompt ('Enter a valid HEX# or colour name');
+        getUserColour = prompt ('Enter a valid HEX# or colour name');
         gridCont.removeEventListener('mouseover', fillBoxBlack);
-        gridCont.addEventListener('mouseover', ()=>{
-            setUserColour(getUserColour,event)},{signal});
-    } else if (colourBtnOn){
+        gridCont.addEventListener('mouseover', userColourWrapper);
+    } else {
         colourBtnOn = false
         gridCont.addEventListener('mouseover', fillBoxBlack);
-        userColourController.abort();        
-    }
-}
+        gridCont.removeEventListener('mouseover', userColourWrapper);
+    };
+};
+function userColourWrapper (){
+    setUserColour(getUserColour,event);
+};
 function setUserColour(getUserColour,event){
         let gridBoxEvent = event.target.className;
         if(gridBoxEvent === 'gridBox'|| gridBoxEvent === 'gridBox fill'){
             event.target.classList.add('fill');
             event.target.style.backgroundColor = `${getUserColour}`;
         };
-}
+};
 const clearBtn = document.querySelector("#clear");
 clearBtn.addEventListener('click', ()=> gridClear('16'));
 function gridClear (currentSize){
