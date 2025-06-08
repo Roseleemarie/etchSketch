@@ -12,7 +12,10 @@ function size (currentSize){
         gridCont.appendChild(gridBox);
     };
 };
-gridCont.addEventListener('mouseover', fillBoxBlack)
+let colourBtnOn = false;
+let eraseBtnOn = false;
+let rgbBtnOn = false;
+let opacityBtnOn = false;
 function fillBoxBlack(event){
     let gridBoxEvent = event.target.className;
     if(gridBoxEvent === 'gridBox'|| gridBoxEvent === 'gridBox fill'){
@@ -20,23 +23,31 @@ function fillBoxBlack(event){
         event.target.style.backgroundColor = 'black'
     };
 };
+gridCont.addEventListener('mouseover', fillBoxBlack);
 const colourBtn = document.querySelector('#colour');
-let colourBtnOn = false
-colourBtn.addEventListener('click',()=>{
-    console.log('colour pressed');
-    colourBtnOn = !colourBtnOn
-    gridCont.removeEventListener('mouseover', fillBoxBlack);
-    chosenColour = prompt ('Enter a valid colour HEX or Name');
-    gridCont.addEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
-});
-function fillBoxColour (chosenColour,event){
-    let gridBoxEvent = event.target.className;
-    if(gridBoxEvent === 'gridBox'|| gridBoxEvent === 'gridBox fill'){
-        event.target.classList.add('fill');
-        console.log(chosenColour);
-        event.target.style.backgroundColor = `${chosenColour}`;
-    };
-};
+colourBtn.addEventListener('click',colourBtnHandler)
+function colourBtnHandler (){
+    const userColourController = new AbortController
+    const signal = userColourController.signal
+    if (!colourBtnOn){
+        colourBtnOn = true
+        let getUserColour = prompt ('Enter a valid HEX# or colour name');
+        gridCont.removeEventListener('mouseover', fillBoxBlack);
+        gridCont.addEventListener('mouseover', ()=>{
+            setUserColour(getUserColour,event)},{signal});
+    } else if (colourBtnOn){
+        colourBtnOn = false
+        gridCont.addEventListener('mouseover', fillBoxBlack);
+        userColourController.abort();        
+    }
+}
+function setUserColour(getUserColour,event){
+        let gridBoxEvent = event.target.className;
+        if(gridBoxEvent === 'gridBox'|| gridBoxEvent === 'gridBox fill'){
+            event.target.classList.add('fill');
+            event.target.style.backgroundColor = `${getUserColour}`;
+        };
+}
 const clearBtn = document.querySelector("#clear");
 clearBtn.addEventListener('click', ()=> gridClear('16'));
 function gridClear (currentSize){
@@ -59,10 +70,7 @@ resizeBtn.addEventListener('click',() => {
     };
 });
 const eraseBtn = document.querySelector('#erase');
-let eraseBtnOn = false;
 eraseBtn.addEventListener('click',()=>{
-    gridCont.removeEventListener('mouseover', fillBoxBlack);
-    gridCont.removeEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
     eraseBtnOn = !eraseBtnOn;
     gridCont.addEventListener('mouseover', erase);
 });
@@ -76,38 +84,32 @@ function erase (event){
     }else if (eraseBtnOn == false){
         gridCont.removeEventListener('mouseover', erase);
         if(colourBtnOn == true){
-            gridCont.addEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
+         gridCont.addEventListener('mouseover', colourEventHandler);        
         }else{
-            gridCont.addEventListener('mouseover', fillBoxBlack);
+            gridCont.removeEventListener('mouseover', fillBoxBlack);
         }
     };
 };
 const rgbBtn = document.querySelector('#rgb');
-    let rgbBtnOn = false;
 rgbBtn.addEventListener('click',()=>{
     gridCont.removeEventListener('mouseover', fillBoxBlack);
-    gridCont.removeEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
     rgbBtnOn = !rgbBtnOn;
     gridCont.addEventListener('mouseover',getRandomRgbColour);
 });
-    function getRandomRgbColour(event) {
-            if (rgbBtnOn == true){
-     let r = Math.floor(Math.random() * 256);
-     let g = Math.floor(Math.random() * 256);
-     let b = Math.floor(Math.random() * 256);
-     rgbColour =  `rgb(${r}, ${g}, ${b})`;
-     let gridBoxEvent = event.target.className;
+function getRandomRgbColour(Event) {
+    if (rgbBtnOn == true){
+        let r = Math.floor(Math.random() * 256);
+        let g = Math.floor(Math.random() * 256);
+        let b = Math.floor(Math.random() * 256);
+        rgbColour =  `rgb(${r}, ${g}, ${b})`;
+        let gridBoxEvent = Event.target.className;
         if(gridBoxEvent === 'gridBox'|| gridBoxEvent === 'gridBox fill'){
-        event.target.classList.add('fill');
-        event.target.style.backgroundColor = `${rgbColour}`;
-    };
+            Event.target.classList.add('fill');
+            Event.target.style.backgroundColor = `${rgbColour}`;
+        };
     }else if (rgbBtnOn == false){
         gridCont.removeEventListener('mouseover', getRandomRgbColour);
-        if(colourBtnOn == true){
-        gridCont.addEventListener('mouseover', (event) => fillBoxColour(chosenColour,event));
-        }else{
         gridCont.addEventListener('mouseover', fillBoxBlack);
-        }
     };
-
 };
+const opacityBtn = document.querySelector('#opacity');
