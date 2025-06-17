@@ -1,0 +1,64 @@
+* {/*Reset's every elements apperance*/ 
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    border-spacing: 0;
+    color: #022e38;
+    font-family: 'PT Sans Narrow',sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.42rem;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    text-decoration: none;
+    text-indent: 0;
+}
+/* blue #86e6f9
+ purple #d696cb
+ green #add696*/
+body{
+    background-color: #e9f7fa;
+}
+#gridCont{
+    width:600px;
+    height: 600px;
+    border: solid rgb(75, 75, 75) 2px;
+    margin:auto;
+    display: flex;
+    flex-flow: row wrap;
+}
+#btnCont{
+    width: 400px;
+    height: 100px;
+    border: solid rgb(75, 75, 75) 2px;
+    border-radius: 15px;
+    background-color: #add69695;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
+.smallBtnCont{
+    display: flex;
+    margin: auto;
+}
+.gridBox{
+    display: flex;
+    border: solid rgb(75, 75, 75) 1px; 
+    box-sizing: border-box;
+}
+button{
+    background-color: #d696cb;
+    border-radius: 10px;
+    margin: 5px;
+    width:70px;
+    height: 30px;
+    text-align: center;
+}
+h1{
+    text-align: center;
+    font-size: 50px;
+    padding: 25px;
+}
