@@ -1,5 +1,3 @@
-// colour button doesn't work with class contains
-//  any fill option cannot go over opacity fully
 let btnCont = document.querySelector("#btnCont");
 let gridCont = document.querySelector("#gridCont");
 let gridBox = document.querySelector(".gridBox");
